@@ -1,3 +1,4 @@
+// src/context/UserContext.jsx
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { getUserDetails } from "../api/api";
 import Cookies from "js-cookie";
@@ -11,9 +12,7 @@ export const UserProvider = ({ children }) => {
     const fetchUserDetails = async () => {
       try {
         const response = await getUserDetails();
-        const userData = response.data.user;
-        setUser(userData);
-        // console.log("Fetched User Details:", userData);
+        setUser(response.data.user);
       } catch (error) {
         console.error("Error fetching user details:", error);
       }

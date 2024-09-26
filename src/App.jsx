@@ -1,13 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { UserProvider } from "./components/UserContext";
+import { UserProvider } from "./context/UserContext";
 import Register from "./components/Register";
 import Login from "./components/Login";
-import AdminDashboard from "./components/AdminDashboard";
-import ProducerDashboard from "./components/ProducerDashboard";
-import RegulatorDashboard from "./components/RegulatorDashboard";
-import DistributorDashboard from "./components/DistributorDashboard";
-import CustomerDashboard from "./components/CustomerDashboard";
+import Dashboard from "./components/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 
 const App = () => {
@@ -18,11 +14,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route element={<PrivateRoute />}>
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/producer" element={<ProducerDashboard />} />
-            <Route path="/regulator" element={<RegulatorDashboard />} />
-            <Route path="/distributor" element={<DistributorDashboard />} />
-            <Route path="/customer" element={<CustomerDashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Route>
         </Routes>
       </Router>
