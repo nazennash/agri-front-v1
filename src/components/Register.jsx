@@ -13,7 +13,7 @@ const Register = () => {
     e.preventDefault();
     try {
       await registerUser({ name, email, password });
-      setSuccessMessage("Successfully registered! Redirecting to login..."); // Set success message
+      setSuccessMessage("Successfully registered! Redirecting to login...");
       setTimeout(() => {
         navigate("/login"); // Redirect to login after a short delay
       }, 2000); // 2 seconds delay
@@ -24,53 +24,68 @@ const Register = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded shadow-md w-96">
-        <h1 className="text-2xl font-bold mb-6 text-center">Register</h1>
+    <div className="flex h-screen">
+      <div className="w-1/2 flex flex-col justify-center px-8">
+        <a href="/" className="text-sm mb-6">
+          {"< Back to home page"}
+        </a>
+        <h1 className="text-4xl font-bold mb-6">Create an Account</h1>
+        <p className="text-gray-500 mb-8">Fill in your details to register!</p>
+
         {successMessage && (
           <div className="bg-green-500 text-white p-3 rounded mb-4 text-center">
             {successMessage}
           </div>
         )}
-        <form onSubmit={handleSubmit} className="flex flex-col">
+
+        <form onSubmit={handleSubmit} className="w-full">
+          <label className="block text-sm font-bold mb-2">Name</label>
           <input
             type="text"
-            placeholder="Name"
+            placeholder="Your Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            className="border p-2 mb-4 rounded"
+            className="w-full px-4 py-3 mb-4 border rounded-md focus:outline-none"
           />
+
+          <label className="block text-sm font-bold mb-2">Email</label>
           <input
             type="email"
-            placeholder="Email"
+            placeholder="mail@domain.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="border p-2 mb-4 rounded"
+            className="w-full px-4 py-3 mb-4 border rounded-md focus:outline-none"
           />
+
+          <label className="block text-sm font-bold mb-2">Password</label>
           <input
             type="password"
-            placeholder="Password"
+            placeholder="Min. 8 characters"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="border p-2 mb-4 rounded"
+            className="w-full px-4 py-3 mb-4 border rounded-md focus:outline-none"
           />
+
           <button
             type="submit"
-            className="bg-blue-500 text-white py-2 rounded mb-4"
+            className="w-full bg-blue-600 text-white py-3 rounded-md font-bold"
           >
             Register
           </button>
         </form>
-        <p className="text-center">
+
+        <p className="text-sm mt-6 text-center">
           Already have an account?{" "}
-          <a href="/login" className="text-blue-500">
+          <a href="/" className="text-blue-500">
             Login now
           </a>
         </p>
       </div>
+
+      <div className="w-1/2 bg-gradient-to-r from-blue-500 to-purple-600"></div>
     </div>
   );
 };

@@ -2,13 +2,21 @@ import React, { useState, useEffect } from "react";
 import { useUser } from "../context/UserContext";
 import Cookies from "js-cookie";
 import { FaUserCircle, FaBell, FaExchangeAlt } from "react-icons/fa";
-import { BiLogOut, BiEditAlt, BiTrash, BiCamera } from "react-icons/bi";
+import { BiLogOut, BiCamera } from "react-icons/bi";
 import { MdDashboard, MdReport } from "react-icons/md";
 import { GiRobotLeg } from "react-icons/gi";
 import { CgEreader, CgProductHunt } from "react-icons/cg";
 import { CiSettings } from "react-icons/ci";
 import { GrGroup } from "react-icons/gr";
-import { useNavigate } from "react-router-dom";
+import SettingsPage from "./SettingsPage";
+import UsersPage from "./UsersPage";
+import RoleManagementPage from "./RoleManagementPage";
+import CredentialsPage from "./CredentialsPage";
+import DataExchangePage from "./DataExchangePage";
+import ProductPassportsPage from "./ProductPassportsPage";
+import ReportsPage from "./ReportsPage";
+import ProductsPage from "./ProductsPage";
+import DashboardContent from "./DashboardContent";
 
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState(() => {
@@ -16,61 +24,40 @@ const Dashboard = () => {
   });
 
   const user = useUser();
-  const navigate = useNavigate();
 
   const handleLogout = () => {
     Cookies.remove("authToken");
-    navigate("/login");
+    navigate("/");
+    window.location.reload();
   };
 
   useEffect(() => {
     localStorage.setItem("activeSection", activeSection);
   }, [activeSection]);
 
-  const renderContent = (sectionTitle, description) => (
-    <div className="bg-white shadow-md rounded-lg mt-4 p-6">
-      <h2 className="text-lg font-bold">{sectionTitle}</h2>
-      <p>{description}</p>
-    </div>
-  );
-
+  // Render content for each section dynamically
   const renderRoleBasedContent = () => {
     switch (activeSection) {
       case "Dashboard":
-        return renderContent("Dashboard", "Welcome to your dashboard.");
+        return <DashboardContent />;
       case "Role Management":
-        return renderContent(
-          "Role Management",
-          "Manage roles and permissions."
-        );
+        return <RoleManagementPage />;
       case "Users":
-        return renderContent("Users", "Manage users and their access.");
+        return <UsersPage />;
       case "Products":
-        return renderContent(
-          "Products",
-          "Manage product details and inventory."
-        );
+        return <ProductsPage />;
       case "Product Passports":
-        return renderContent(
-          "Product Passports",
-          "View and manage product passports."
-        );
+        return <ProductPassportsPage />;
       case "Reports":
-        return renderContent("Reports", "Generate and review reports.");
+        return <ReportsPage />; // Render ReportsPage
       case "Credentials":
-        return renderContent(
-          "Credentials",
-          "Manage user credentials and security."
-        );
+        return <CredentialsPage />;
       case "Data Exchange":
-        return renderContent(
-          "Data Exchange",
-          "Oversee data exchange between systems."
-        );
+        return <DataExchangePage />;
       case "Settings":
-        return renderContent("Settings", "Adjust your system settings.");
+        return <SettingsPage />;
       default:
-        return renderContent("Dashboard", "Welcome to your dashboard.");
+        return <p>Welcome to your dashboard.</p>;
     }
   };
 
@@ -100,7 +87,7 @@ const Dashboard = () => {
       name: "Reports",
       icon: <MdReport className="mr-2" />,
       section: "Reports",
-    },
+    }, // Add Reports to sidebar
     {
       name: "Credentials",
       icon: <CgEreader className="mr-2" />,
@@ -121,7 +108,7 @@ const Dashboard = () => {
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-md">
+      <aside className="w-64 bg-white shadow-md h-screen fixed">
         <div className="p-4">
           <h2 className="text-xl font-bold m-5">Logo</h2>
         </div>
@@ -129,19 +116,19 @@ const Dashboard = () => {
           {navItems.map((item) => (
             <li
               key={item.name}
-              onClick={() => setActiveSection(item.section)}
+              onClick={() => setActiveSection(item.section)} // Set active section when clicked
               className={`mb-5 p-3 hover:bg-blue-500 hover:text-white hover:rounded-md cursor-pointer ${
                 activeSection === item.section
                   ? "bg-blue-500 text-white rounded-md"
                   : ""
               }`}
             >
-              <div className="flex items-center">
+              <a className="flex items-center">
                 {item.icon} {item.name}
-              </div>
+              </a>
             </li>
           ))}
-          <li className="mb-5 p-3 hover:bg-blue-500 hover:text-white hover:rounded-md bottom-0 absolute cursor-pointer">
+          <li className="mb-5 p-3 hover:bg-blue-500 hover:text-white hover:rounded-md bottom-0 absolute">
             <button
               onClick={handleLogout}
               className="text-red-500 flex items-center"
@@ -153,7 +140,7 @@ const Dashboard = () => {
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 p-6 bg-gray-100">
+      <div className="flex-1 p-6 bg-gray-100 ml-64 overflow-y-auto">
         {/* Top Bar */}
         <header className="flex justify-between items-center bg-white p-4 shadow-md">
           <h1 className="text-xl font-bold">{activeSection}</h1>
@@ -167,6 +154,7 @@ const Dashboard = () => {
           </div>
         </header>
 
+        {/* Render the Role-Based Content */}
         {renderRoleBasedContent()}
       </div>
     </div>
