@@ -19,17 +19,17 @@ const Login = () => {
             case "Admin":
               navigate("/admin");
               break;
+            case "Consumer":
+              navigate("/customer");
+              break;
             case "Producer":
               navigate("/producer");
-              break;
-            case "Regulator":
-              navigate("/regulator");
               break;
             case "Distributor":
               navigate("/distributor");
               break;
-            case "Consumer":
-              navigate("/customer");
+            case "Regulator":
+              navigate("/regulator");
               break;
             default:
               navigate("/");
@@ -41,6 +41,14 @@ const Login = () => {
     };
 
     checkUserLoggedIn();
+
+    // Check for token in URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+    if (token) {
+      Cookies.set("authToken", token, { expires: 1 }); // Store token in cookie
+      navigate("/"); // Redirect to home or appropriate dashboard
+    }
   }, [navigate]);
 
   const handleSubmit = async (e) => {
@@ -48,7 +56,7 @@ const Login = () => {
     try {
       const response = await loginUser({ email, password });
       const token = response.data.token; // Adjust based on your API response structure
-      Cookies.set("authToken", token, { expires: 1 }); // Store the token in a cookie for 1 day
+      Cookies.set("authToken", token, { expires: 1 }); // Store token in cookie
       const user = response.data.userdetails.name;
       const role = response.data.userdetails.role;
       if (user && role) {
@@ -56,17 +64,17 @@ const Login = () => {
           case "Admin":
             navigate("/admin");
             break;
+          case "Consumer":
+            navigate("/customer");
+            break;
           case "Producer":
             navigate("/producer");
-            break;
-          case "Regulator":
-            navigate("/regulator");
             break;
           case "Distributor":
             navigate("/distributor");
             break;
-          case "Consumer":
-            navigate("/customer");
+          case "Regulator":
+            navigate("/regulator");
             break;
           default:
             navigate("/");
@@ -80,22 +88,29 @@ const Login = () => {
     }
   };
 
+  const handleGoogleLogin = () => {
+    window.open("http://localhost:5000/auth/google", "_self"); // Redirect to Google OAuth
+  };
+
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="email"
-        placeholder="Email"
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <button type="submit">Login</button>
-    </form>
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="email"
+          placeholder="Email"
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit">Login</button>
+      </form>
+      <button onClick={handleGoogleLogin}>Login with Google</button>
+    </div>
   );
 };
 
