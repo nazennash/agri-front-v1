@@ -17,7 +17,6 @@ import ProductPassportsPage from "./ProductPassportsPage";
 import ReportsPage from "./ReportsPage";
 import ProductsPage from "./ProductsPage";
 import DashboardContent from "./DashboardContent";
-import { useNavigate } from "react-router-dom"; // Import useNavigate hook
 
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState(() => {
@@ -25,7 +24,6 @@ const Dashboard = () => {
   });
 
   const user = useUser();
-  const navigate = useNavigate(); // Use the navigate hook here
 
   const handleLogout = () => {
     Cookies.remove("authToken");
@@ -37,63 +35,7 @@ const Dashboard = () => {
     localStorage.setItem("activeSection", activeSection);
   }, [activeSection]);
 
-  const navItems = [
-    {
-      name: "Dashboard",
-      icon: <MdDashboard className="mr-2" />,
-      section: "Dashboard",
-      roles: ["Admin", "Producer", "Consumer", "Distributor", "Regulator"],
-    },
-    {
-      name: "Role Management",
-      icon: <GiRobotLeg className="mr-2" />,
-      section: "Role Management",
-      roles: ["Admin"],
-    },
-    {
-      name: "Users",
-      icon: <GrGroup className="mr-2" />,
-      section: "Users",
-      roles: ["Admin"],
-    },
-    {
-      name: "Products",
-      icon: <CgProductHunt className="mr-2" />,
-      section: "Products",
-      roles: ["Producer", "Admin"],
-    },
-    {
-      name: "Product Passports",
-      icon: <BiCamera className="mr-2" />,
-      section: "Product Passports",
-      roles: ["Producer", "Admin"],
-    },
-    {
-      name: "Reports",
-      icon: <MdReport className="mr-2" />,
-      section: "Reports",
-      roles: ["Admin", "Regulator"],
-    },
-    {
-      name: "Credentials",
-      icon: <CgEreader className="mr-2" />,
-      section: "Credentials",
-      roles: ["Admin", "Producer", "Consumer"],
-    },
-    {
-      name: "Data Exchange",
-      icon: <FaExchangeAlt className="mr-2" />,
-      section: "Data Exchange",
-      roles: ["Admin", "Distributor"],
-    },
-    {
-      name: "Settings",
-      icon: <CiSettings className="mr-2" />,
-      section: "Settings",
-      roles: ["Admin", "Producer", "Consumer", "Distributor", "Regulator"],
-    },
-  ];
-
+  // Render content for each section dynamically
   const renderRoleBasedContent = () => {
     switch (activeSection) {
       case "Dashboard":
@@ -107,7 +49,7 @@ const Dashboard = () => {
       case "Product Passports":
         return <ProductPassportsPage />;
       case "Reports":
-        return <ReportsPage />;
+        return <ReportsPage />; // Render ReportsPage
       case "Credentials":
         return <CredentialsPage />;
       case "Data Exchange":
@@ -119,30 +61,73 @@ const Dashboard = () => {
     }
   };
 
+  const navItems = [
+    {
+      name: "Dashboard",
+      icon: <MdDashboard className="mr-2" />,
+      section: "Dashboard",
+    },
+    {
+      name: "Role Management",
+      icon: <GiRobotLeg className="mr-2" />,
+      section: "Role Management",
+    },
+    { name: "Users", icon: <GrGroup className="mr-2" />, section: "Users" },
+    {
+      name: "Products",
+      icon: <CgProductHunt className="mr-2" />,
+      section: "Products",
+    },
+    {
+      name: "Product Passports",
+      icon: <BiCamera className="mr-2" />,
+      section: "Product Passports",
+    },
+    {
+      name: "Reports",
+      icon: <MdReport className="mr-2" />,
+      section: "Reports",
+    }, // Add Reports to sidebar
+    {
+      name: "Credentials",
+      icon: <CgEreader className="mr-2" />,
+      section: "Credentials",
+    },
+    {
+      name: "Data Exchange",
+      icon: <FaExchangeAlt className="mr-2" />,
+      section: "Data Exchange",
+    },
+    {
+      name: "Settings",
+      icon: <CiSettings className="mr-2" />,
+      section: "Settings",
+    },
+  ];
+
   return (
     <div className="flex h-screen">
+      {/* Sidebar */}
       <aside className="w-64 bg-white shadow-md h-screen fixed">
         <div className="p-4">
           <h2 className="text-xl font-bold m-5">Logo</h2>
         </div>
         <ul className="mt-5 m-5">
-          {navItems
-            .filter((item) => item.roles.includes(user?.role))
-            .map((item) => (
-              <li
-                key={item.name}
-                onClick={() => setActiveSection(item.section)}
-                className={`mb-5 p-3 hover:bg-blue-500 hover:text-white hover:rounded-md cursor-pointer ${
-                  activeSection === item.section
-                    ? "bg-blue-500 text-white rounded-md"
-                    : ""
-                }`}
-              >
-                <a className="flex items-center">
-                  {item.icon} {item.name}
-                </a>
-              </li>
-            ))}
+          {navItems.map((item) => (
+            <li
+              key={item.name}
+              onClick={() => setActiveSection(item.section)} // Set active section when clicked
+              className={`mb-5 p-3 hover:bg-blue-500 hover:text-white hover:rounded-md cursor-pointer ${
+                activeSection === item.section
+                  ? "bg-blue-500 text-white rounded-md"
+                  : ""
+              }`}
+            >
+              <a className="flex items-center">
+                {item.icon} {item.name}
+              </a>
+            </li>
+          ))}
           <li className="mb-5 p-3 hover:bg-blue-500 hover:text-white hover:rounded-md bottom-0 absolute">
             <button
               onClick={handleLogout}
@@ -154,7 +139,9 @@ const Dashboard = () => {
         </ul>
       </aside>
 
+      {/* Main Content */}
       <div className="flex-1 p-6 bg-gray-100 ml-64 overflow-y-auto">
+        {/* Top Bar */}
         <header className="flex justify-between items-center bg-white p-4 shadow-md">
           <h1 className="text-xl font-bold">{activeSection}</h1>
           <div className="flex items-center">
@@ -167,6 +154,7 @@ const Dashboard = () => {
           </div>
         </header>
 
+        {/* Render the Role-Based Content */}
         {renderRoleBasedContent()}
       </div>
     </div>

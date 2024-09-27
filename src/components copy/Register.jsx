@@ -6,8 +6,8 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-  const navigate = useNavigate();
+  const [successMessage, setSuccessMessage] = useState(""); // State for success message
+  const navigate = useNavigate(); // For navigation after registration
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,8 +15,8 @@ const Register = () => {
       await registerUser({ name, email, password });
       setSuccessMessage("Successfully registered! Redirecting to login...");
       setTimeout(() => {
-        navigate("/");
-      }, 2000);
+        navigate("/login"); // Redirect to login after a short delay
+      }, 2000); // 2 seconds delay
     } catch (error) {
       console.error("Registration error:", error);
       alert("Registration failed!");

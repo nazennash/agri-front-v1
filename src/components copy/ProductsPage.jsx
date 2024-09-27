@@ -1,62 +1,90 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BiEditAlt, BiTrash } from "react-icons/bi";
-import { getProducts, deleteProduct, addProduct } from "../api/api";
 
 const ProductsPage = () => {
-  const [products, setProducts] = useState([]);
-  const [newProduct, setNewProduct] = useState({
-    name: "",
-    customer: "",
-    date: "",
-    amount: "",
-  });
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await getProducts();
-        setProducts(response.data || []);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
-  const handleDelete = async (id) => {
-    try {
-      await deleteProduct(id);
-      setProducts(products.filter((product) => product.id !== id));
-    } catch (error) {
-      console.error("Error deleting product:", error);
-      alert("Failed to delete product!");
-    }
-  };
-
-  const handleAddProduct = async () => {
-    try {
-      const addedProduct = await addProduct(newProduct);
-      setProducts([...products, addedProduct.data]);
-      setNewProduct({ name: "", customer: "", date: "", amount: "" });
-    } catch (error) {
-      console.error("Error adding product:", error);
-      alert("Failed to add product!");
-    }
-  };
+  const products = [
+    {
+      id: "#20462",
+      name: "Hat",
+      customer: "Matt Dickerson",
+      date: "13/05/2022",
+      amount: "$4.95",
+    },
+    {
+      id: "#18933",
+      name: "Laptop",
+      customer: "Wiktoria",
+      date: "22/05/2022",
+      amount: "$8.95",
+    },
+    {
+      id: "#45169",
+      name: "Phone",
+      customer: "Trixie Byrd",
+      date: "15/06/2022",
+      amount: "$1,149.95",
+    },
+    {
+      id: "#34304",
+      name: "Bag",
+      customer: "Brad Mason",
+      date: "06/09/2022",
+      amount: "$899.95",
+    },
+    {
+      id: "#17188",
+      name: "Headset",
+      customer: "Sanderson",
+      date: "25/09/2022",
+      amount: "$22.95",
+    },
+    {
+      id: "#73003",
+      name: "Mouse",
+      customer: "Jun Redfern",
+      date: "04/10/2022",
+      amount: "$54.95",
+    },
+    {
+      id: "#58825",
+      name: "Clock",
+      customer: "Miriam Kidd",
+      date: "17/10/2022",
+      amount: "$174.95",
+    },
+    {
+      id: "#44122",
+      name: "T-shirt",
+      customer: "Dominic",
+      date: "24/10/2022",
+      amount: "$249.95",
+    },
+    {
+      id: "#89094",
+      name: "Monitor",
+      customer: "Shanice",
+      date: "01/11/2022",
+      amount: "$899.95",
+    },
+    {
+      id: "#85252",
+      name: "Keyboard",
+      customer: "Poppy-Rose",
+      date: "22/11/2022",
+      amount: "$6.95",
+    },
+  ];
 
   return (
     <div className="p-6 bg-gray-100">
       <div className="flex justify-between mb-4">
         <h2 className="text-lg font-bold">Products</h2>
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded-md"
-          onClick={handleAddProduct}
-        >
+        <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
           + Add Product
         </button>
       </div>
 
+      {/* Products Table */}
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200">
           <thead>
@@ -81,10 +109,7 @@ const ProductsPage = () => {
                   <button className="text-blue-500 mr-2">
                     <BiEditAlt />
                   </button>
-                  <button
-                    className="text-red-500"
-                    onClick={() => handleDelete(product.id)}
-                  >
+                  <button className="text-red-500">
                     <BiTrash />
                   </button>
                 </td>
@@ -94,10 +119,9 @@ const ProductsPage = () => {
         </table>
       </div>
 
+      {/* Pagination */}
       <div className="flex justify-between items-center mt-4">
-        <span>
-          Showing data 1 to {products.length} of {products.length} entries
-        </span>
+        <span>Showing data 1 to 10 of 256K entries</span>
         <div className="flex space-x-2">
           <button className="px-4 py-2 bg-gray-200 rounded">Previous</button>
           <button className="px-4 py-2 bg-blue-500 text-white rounded">

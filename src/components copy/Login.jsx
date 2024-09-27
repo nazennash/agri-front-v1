@@ -12,7 +12,6 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await loginUser({ email, password });
-      console.log("Login response:", response);
       const token = response.data.token;
       Cookies.set("authToken", token, { expires: 1 });
       navigate("/dashboard");

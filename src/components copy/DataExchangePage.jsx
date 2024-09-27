@@ -1,33 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BiEditAlt, BiTrash } from "react-icons/bi";
-import { getDataExchanges, requestDataExchange } from "../api/api";
 
 const DataExchangePage = () => {
-  const [dataExchanges, setDataExchanges] = useState([]);
-
-  useEffect(() => {
-    const fetchDataExchanges = async () => {
-      try {
-        const response = await getDataExchanges();
-        setDataExchanges(response.data || []);
-      } catch (error) {
-        console.error("Error fetching data exchanges:", error);
-      }
-    };
-
-    fetchDataExchanges();
-  }, []);
-
-  const handleRequestDataExchange = async () => {
-    try {
-      await requestDataExchange();
-      const response = await getDataExchanges();
-      setDataExchanges(response.data || []);
-    } catch (error) {
-      console.error("Error requesting data exchange:", error);
-      alert("Failed to request data exchange!");
-    }
-  };
+  // Dummy data exchange information
+  const dataExchanges = [
+    {
+      name: "Marketplace",
+      status: "Approved",
+      date: "24.Jan.2021",
+      progress: 80,
+    },
+    {
+      name: "Venus Dashboard Builder",
+      status: "Declined",
+      date: "30.Dec.2021",
+      progress: 40,
+    },
+    {
+      name: "Venus Design System",
+      status: "Error",
+      date: "20.May.2021",
+      progress: 90,
+    },
+    { name: "Uranus", status: "Approved", date: "12.Jul.2021", progress: 60 },
+  ];
 
   const renderStatus = (status) => {
     switch (status) {
@@ -54,16 +50,15 @@ const DataExchangePage = () => {
   return (
     <div className="p-6 bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-md">
+        {/* Header */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-bold">Data Exchange</h2>
-          <button
-            onClick={handleRequestDataExchange}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md"
-          >
+          <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
             + Request Data Exchange
           </button>
         </div>
 
+        {/* Table */}
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border border-gray-200">
             <thead>
@@ -75,37 +70,25 @@ const DataExchangePage = () => {
               </tr>
             </thead>
             <tbody>
-              {dataExchanges.length > 0 ? (
-                dataExchanges.map((exchange, index) => (
-                  <tr key={index}>
-                    <td className="py-2 px-4 border-b">{exchange.name}</td>
-                    <td className="py-2 px-4 border-b">
-                      {renderStatus(exchange.status)}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {new Date(exchange.date).toLocaleDateString()}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {renderProgressBar(exchange.progress)}
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="4" className="py-2 px-4 border-b text-center">
-                    No data exchanges found
+              {dataExchanges.map((exchange, index) => (
+                <tr key={index}>
+                  <td className="py-2 px-4 border-b">{exchange.name}</td>
+                  <td className="py-2 px-4 border-b">
+                    {renderStatus(exchange.status)}
+                  </td>
+                  <td className="py-2 px-4 border-b">{exchange.date}</td>
+                  <td className="py-2 px-4 border-b">
+                    {renderProgressBar(exchange.progress)}
                   </td>
                 </tr>
-              )}
+              ))}
             </tbody>
           </table>
         </div>
 
+        {/* Pagination */}
         <div className="mt-4 flex justify-between">
-          <p>
-            Showing data 1 to {dataExchanges.length} of {dataExchanges.length}{" "}
-            entries
-          </p>
+          <p>Showing data 1 to 4 of 4 entries</p>
           <div className="flex space-x-2">
             <button className="bg-blue-500 text-white px-3 py-1 rounded-md">
               1

@@ -4,9 +4,10 @@ import { FaUserCircle } from "react-icons/fa";
 import { BiPencil } from "react-icons/bi";
 
 const SettingsPage = () => {
+  // Get the logged-in user's details from the context
   const user = useUser();
-  console.log("User:", user);
 
+  // Function to render role-based content
   const renderRoleBasedContent = () => {
     switch (user?.role) {
       case "Admin":
@@ -58,12 +59,15 @@ const SettingsPage = () => {
 
   return (
     <div className="p-6 bg-gray-100">
+      {/* Main Content */}
       <div className="flex gap-6 mt-6">
+        {/* Left Section */}
         <div className="flex-1">
+          {/* Profile Card */}
           <div className="bg-white p-6 rounded-lg shadow-md mb-6">
             <div className="flex items-center mb-4">
               <img
-                src="https://via.placeholder.com/100"
+                src="https://via.placeholder.com/100" // Placeholder for profile picture
                 alt="Profile"
                 className="rounded-full w-20 h-20"
               />
@@ -88,6 +92,7 @@ const SettingsPage = () => {
             </div>
           </div>
 
+          {/* Upload Files Section */}
           <div className="bg-white p-6 rounded-lg shadow-md mb-6">
             <h2 className="text-lg font-bold mb-4">Upload Files</h2>
             <div className="border-dashed border-2 border-gray-300 p-6 rounded-lg text-center">
@@ -101,6 +106,7 @@ const SettingsPage = () => {
             </button>
           </div>
 
+          {/* All Products Section */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-lg font-bold mb-4">All Products</h2>
             <p className="text-gray-500 mb-4">
@@ -110,7 +116,7 @@ const SettingsPage = () => {
               <div className="flex justify-between items-center">
                 <div className="flex items-center">
                   <img
-                    src="https://via.placeholder.com/50"
+                    src="https://via.placeholder.com/50" // Placeholder for product image
                     alt="Product"
                     className="w-12 h-12 rounded-lg"
                   />
@@ -129,7 +135,7 @@ const SettingsPage = () => {
               <div className="flex justify-between items-center">
                 <div className="flex items-center">
                   <img
-                    src="https://via.placeholder.com/50"
+                    src="https://via.placeholder.com/50" // Placeholder for product image
                     alt="Product"
                     className="w-12 h-12 rounded-lg"
                   />
@@ -148,7 +154,7 @@ const SettingsPage = () => {
               <div className="flex justify-between items-center">
                 <div className="flex items-center">
                   <img
-                    src="https://via.placeholder.com/50"
+                    src="https://via.placeholder.com/50" // Placeholder for product image
                     alt="Product"
                     className="w-12 h-12 rounded-lg"
                   />
@@ -167,6 +173,7 @@ const SettingsPage = () => {
           </div>
         </div>
 
+        {/* Right Section: Notifications */}
         <div className="w-1/3">
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-lg font-bold mb-4">Notifications</h2>
@@ -216,6 +223,7 @@ const SettingsPage = () => {
         </div>
       </div>
 
+      {/* Role-Based Content Section */}
       {renderRoleBasedContent()}
     </div>
   );

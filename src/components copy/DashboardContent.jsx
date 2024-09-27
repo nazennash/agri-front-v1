@@ -1,59 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { getProducts, getRecentActions } from "../api/api";
-import { useUser } from "../context/UserContext";
+import React from "react";
 
 const DashboardContent = () => {
-  const user = useUser();
-
-  const [pendingVerifications, setPendingVerifications] = useState(0);
-  const [totalProducts, setTotalProducts] = useState(0);
-  const [verifiedCredentials, setVerifiedCredentials] = useState(0);
-  const [newCustomers, setNewCustomers] = useState(0);
-  const [recentActions, setRecentActions] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const verificationsResponse = await getPendingVerifications();
-        const productsResponse = await getProducts();
-        const credentialsResponse = await getVerifiedCredentials();
-        const customersResponse = await getNewCustomers();
-        const actionsResponse = await getRecentActions();
-
-        setPendingVerifications(verificationsResponse.data.count || 0);
-        setTotalProducts(productsResponse.data.length || 0);
-        setVerifiedCredentials(credentialsResponse.data.count || 0);
-        setNewCustomers(customersResponse.data.count || 0);
-        setRecentActions(actionsResponse.data || []);
-      } catch (error) {
-        console.error("Error fetching dashboard data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
   return (
     <div className="p-6 bg-white shadow-md rounded-lg">
+      {/* Statistics Summary */}
       <div className="grid grid-cols-4 gap-4 mb-6">
         <div className="bg-pink-100 p-4 rounded-lg text-center">
-          <h3 className="text-xl font-bold">{pendingVerifications}</h3>
+          <h3 className="text-xl font-bold">567</h3>
           <p className="text-sm">Pending Verifications</p>
         </div>
         <div className="bg-yellow-100 p-4 rounded-lg text-center">
-          <h3 className="text-xl font-bold">{totalProducts}</h3>
+          <h3 className="text-xl font-bold">300</h3>
           <p className="text-sm">Total Products</p>
         </div>
         <div className="bg-green-100 p-4 rounded-lg text-center">
-          <h3 className="text-xl font-bold">{verifiedCredentials}</h3>
+          <h3 className="text-xl font-bold">5</h3>
           <p className="text-sm">Verified Credentials</p>
         </div>
         <div className="bg-purple-100 p-4 rounded-lg text-center">
-          <h3 className="text-xl font-bold">{newCustomers}</h3>
+          <h3 className="text-xl font-bold">8</h3>
           <p className="text-sm">New Customers</p>
         </div>
       </div>
 
+      {/* Data Exchanges and Top Products */}
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div className="bg-white p-6 shadow-md rounded-lg">
           <h3 className="font-bold mb-4">Data Exchanges</h3>
@@ -84,6 +54,7 @@ const DashboardContent = () => {
         </div>
       </div>
 
+      {/* Recent Actions */}
       <div className="bg-white p-6 shadow-md rounded-lg">
         <h3 className="font-bold mb-4">Recent Actions</h3>
         <table className="min-w-full bg-white border">
@@ -96,26 +67,30 @@ const DashboardContent = () => {
             </tr>
           </thead>
           <tbody>
-            {recentActions.map((action, index) => (
-              <tr key={index}>
-                <td className="py-2 px-4 border">{action.name}</td>
-                <td
-                  className={`py-2 px-4 border text-${
-                    action.status === "Approved"
-                      ? "green"
-                      : action.status === "Denied"
-                      ? "red"
-                      : "yellow"
-                  }-500`}
-                >
-                  {action.status}
-                </td>
-                <td className="py-2 px-4 border">
-                  {new Date(action.time).toLocaleDateString()}
-                </td>
-                <td className="py-2 px-4 border">{action.user}</td>
-              </tr>
-            ))}
+            <tr>
+              <td className="py-2 px-4 border">Delete User</td>
+              <td className="py-2 px-4 border text-green-500">Approved</td>
+              <td className="py-2 px-4 border">24.Jan.2021</td>
+              <td className="py-2 px-4 border">Palmer</td>
+            </tr>
+            <tr>
+              <td className="py-2 px-4 border">Verify Product Passport</td>
+              <td className="py-2 px-4 border text-red-500">Denied</td>
+              <td className="py-2 px-4 border">30.Dec.2021</td>
+              <td className="py-2 px-4 border">Joan</td>
+            </tr>
+            <tr>
+              <td className="py-2 px-4 border">Add Product</td>
+              <td className="py-2 px-4 border text-yellow-500">Error</td>
+              <td className="py-2 px-4 border">20.May.2021</td>
+              <td className="py-2 px-4 border">Stephan</td>
+            </tr>
+            <tr>
+              <td className="py-2 px-4 border">User Login</td>
+              <td className="py-2 px-4 border text-green-500">Approved</td>
+              <td className="py-2 px-4 border">12.Jul.2021</td>
+              <td className="py-2 px-4 border">Skipper</td>
+            </tr>
           </tbody>
         </table>
       </div>

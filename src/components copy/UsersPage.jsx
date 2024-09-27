@@ -1,67 +1,79 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BiEditAlt, BiTrash } from "react-icons/bi";
-import { getAllUsers, deleteUser, updateUserRole } from "../api/api";
 
 const UsersPage = () => {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await getAllUsers();
-        setUsers(response.data);
-        setLoading(false);
-      } catch (error) {
-        setError("Error fetching users");
-        setLoading(false);
-      }
-    };
-
-    fetchUsers();
-  }, []);
-
-  const handleDelete = async (userId) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      try {
-        await deleteUser(userId);
-        setUsers((prevUsers) =>
-          prevUsers.filter((user) => user._id !== userId)
-        ); // Update UI
-      } catch (error) {
-        alert("Error deleting user");
-      }
-    }
-  };
-
-  const handleEditRole = async (userId) => {
-    const newRole = prompt("Enter the new role for this user:");
-    if (newRole) {
-      try {
-        await updateUserRole(userId, { role: newRole });
-        setUsers((prevUsers) =>
-          prevUsers.map((user) =>
-            user._id === userId ? { ...user, role: newRole } : user
-          )
-        );
-      } catch (error) {
-        alert("Error updating user role");
-      }
-    }
-  };
-
-  if (loading) {
-    return <div>Loading users...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
+  // Dummy users data
+  const users = [
+    {
+      id: 1,
+      name: "Jane Cooper",
+      role: "Regular",
+      phone: "(225) 555-0118",
+      email: "jane@microsoft.com",
+      country: "United States",
+    },
+    {
+      id: 2,
+      name: "Floyd Miles",
+      role: "Admin",
+      phone: "(205) 555-0100",
+      email: "floyd@yahoo.com",
+      country: "Kiribati",
+    },
+    {
+      id: 3,
+      name: "Ronald Richards",
+      role: "Distributor",
+      phone: "(302) 555-0107",
+      email: "ronald@adobe.com",
+      country: "Israel",
+    },
+    {
+      id: 4,
+      name: "Marvin McKinney",
+      role: "Consumer",
+      phone: "(252) 555-0126",
+      email: "marvin@tesla.com",
+      country: "Iran",
+    },
+    {
+      id: 5,
+      name: "Jerome Bell",
+      role: "Producer",
+      phone: "(629) 555-0129",
+      email: "jerome@google.com",
+      country: "Réunion",
+    },
+    {
+      id: 6,
+      name: "Kathryn Murphy",
+      role: "Consumer",
+      phone: "(406) 555-0120",
+      email: "kathryn@microsoft.com",
+      country: "Curaçao",
+    },
+    {
+      id: 7,
+      name: "Jacob Jones",
+      role: "Admin",
+      phone: "(208) 555-0112",
+      email: "jacob@yahoo.com",
+      country: "Brazil",
+    },
+    {
+      id: 8,
+      name: "Kristin Watson",
+      role: "Regular",
+      phone: "(704) 555-0127",
+      email: "kristin@facebook.com",
+      country: "Åland Islands",
+    },
+  ];
 
   return (
     <div className="p-6 bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-md">
+        {/* Header */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-bold">All Users</h2>
           <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
@@ -69,6 +81,7 @@ const UsersPage = () => {
           </button>
         </div>
 
+        {/* Search and Sort */}
         <div className="flex justify-between mb-4">
           <input
             type="text"
@@ -81,6 +94,7 @@ const UsersPage = () => {
           </select>
         </div>
 
+        {/* Users Table */}
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border border-gray-200">
             <thead>
@@ -95,23 +109,17 @@ const UsersPage = () => {
             </thead>
             <tbody>
               {users.map((user) => (
-                <tr key={user._id}>
+                <tr key={user.id}>
                   <td className="py-2 px-4 border-b">{user.name}</td>
                   <td className="py-2 px-4 border-b">{user.role}</td>
                   <td className="py-2 px-4 border-b">{user.phone}</td>
                   <td className="py-2 px-4 border-b">{user.email}</td>
                   <td className="py-2 px-4 border-b">{user.country}</td>
                   <td className="py-2 px-4 border-b">
-                    <button
-                      className="text-blue-500 mr-2"
-                      onClick={() => handleEditRole(user._id)}
-                    >
+                    <button className="text-blue-500 mr-2">
                       <BiEditAlt />
                     </button>
-                    <button
-                      className="text-red-500"
-                      onClick={() => handleDelete(user._id)}
-                    >
+                    <button className="text-red-500">
                       <BiTrash />
                     </button>
                   </td>
@@ -121,10 +129,9 @@ const UsersPage = () => {
           </table>
         </div>
 
+        {/* Pagination */}
         <div className="mt-4 flex justify-between">
-          <p>
-            Showing data 1 to {users.length} of {users.length} entries
-          </p>
+          <p>Showing data 1 to 8 of 256K entries</p>
           <div className="flex space-x-2">
             <button className="bg-blue-500 text-white px-3 py-1 rounded-md">
               1
